@@ -15,7 +15,7 @@ const PORT = 5000;
 // запросов из библиотеки npm
 // ________ morgan (HTTP request logger middleware for node.js) ______________
 // app.use(morgan('combined'));
-
+// log info about request
 app.use(morgan('tiny'));
 
 // __ Обработка ("вручную") запросов в JSON формате (middleware function) ____________
@@ -38,6 +38,7 @@ app.use(morgan('tiny'));
 // ______________________________________
 
 // Но вместо этой ф-ции используем метод express
+// convert JSON object to usually JS object in POST, PUT, PATCH request
 app.use(express.json());
 
 // __ Обработка ("вручную") запросов "form" (middleware function) ____________
@@ -57,8 +58,10 @@ app.use(express.json());
 // ______________________________________
 
 // Но вместо этой ф-ции используем метод express
+
+// convert form data to usually JS object in POST, PUT, PATCH request
 app.use(express.urlencoded({ extended: true }));
-// Здесь { extended: true } исползовано вместо встроенного модуля
+// Здесь { extended: true } использовано вместо встроенного модуля
 // querystring, а напрямую используется qs, которая уже есть в зависимости
 app.use((req, res) => {
     console.log(req.body);
