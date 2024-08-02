@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+// import qs from 'querystring';
 const app = express();
 const PORT = 5000;
 
@@ -17,7 +18,7 @@ const PORT = 5000;
 
 app.use(morgan('tiny'));
 
-// __________________________________________________________
+// __ Обработка ("вручную") запросов в JSON формате (middleware function) ____________
 // Middleware function
 // app.use((req, res, next) => {
 //     let data = '';
@@ -36,11 +37,29 @@ app.use(morgan('tiny'));
 // });
 // ______________________________________
 
-// Но вместо выше представленной ф-ции можно воспользоваться
-// методом express
-
+// Но вместо этой ф-ции используем метод express
 app.use(express.json());
 
+// __ Обработка ("вручную") запросов "form" (middleware function) ____________
+// app.use((req, res, next) => {
+//     if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+//         let data = '';
+//         req.on('data', (chunk) => (data += chunk.toString()));
+//         req.on('end', () => {
+//             const parsedFormData = qs.parse(data);
+//             req.body = parsedFormData;
+//             next();
+//         });
+//     } else {
+//         next();
+//     }
+// });
+// ______________________________________
+
+// Но вместо этой ф-ции используем метод express
+app.use(express.urlencoded({ extended: true }));
+// Здесь { extended: true } исползовано вместо встроенного модуля
+// querystring, а напрямую используется qs, которая уже есть в зависимости
 app.use((req, res) => {
     console.log(req.body);
     return res.send('This is express server');
